@@ -8,9 +8,9 @@ import {CoinbaseSmartWallet, CoinbaseSmartWalletFactory} from "../src/CoinbaseSm
 
 contract DeployFactoryScript is Script {
     address constant EXPECTED_IMPLEMENTATION =
-        0x09655Fb46D2673302AEea47a496C7F4408f5c192;
+        0x1d8a44516C3B3Dc1306b140106EA1b73f4FEAC2a;
     address constant EXPECTED_FACTORY =
-        0x356336adA1619BeC1Ae4E6D94Dd9c0490DA414a8;
+        0x08e62719a7da36830c50a2903517c2B13d4c8204;
 
     function isDeployed(address addr) public view returns (bool) {
         // Check if there is a contract at the address

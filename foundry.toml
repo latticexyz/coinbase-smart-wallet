@@ -8,6 +8,9 @@ solc_version = '0.8.23'
 evm_version = "paris"
 optimizer = true
 optimizer_runs = 999999
+via_ir = true
+evm_version = "prague"
+solc_version = "0.8.23"
 
 [fmt]
 sort_imports = true
