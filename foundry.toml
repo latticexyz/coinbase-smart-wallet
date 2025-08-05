@@ -4,8 +4,6 @@ out = "out"
 libs = ["lib"]
 
 [profile.deploy]
-solc_version = '0.8.23'
-evm_version = "paris"
 optimizer = true
 optimizer_runs = 999999
 via_ir = true
