@@ -7,24 +7,40 @@ import {SafeSingletonDeployer} from "safe-singleton-deployer-sol/src/SafeSinglet
 import {CoinbaseSmartWallet, CoinbaseSmartWalletFactory} from "../src/CoinbaseSmartWalletFactory.sol";
 
 contract DeployFactoryScript is Script {
-    address constant EXPECTED_IMPLEMENTATION = 0x00000110dCdEdC9581cb5eCB8467282f2926534d;
-    address constant EXPECTED_FACTORY = 0xBA5ED110eFDBa3D005bfC882d75358ACBbB85842;
+    address constant EXPECTED_IMPLEMENTATION =
+        0x1d8a44516C3B3Dc1306b140106EA1b73f4FEAC2a;
+    address constant EXPECTED_FACTORY =
+        0x08e62719a7da36830c50a2903517c2B13d4c8204;
+
+    function isDeployed(address addr) public view returns (bool) {
+        // Check if there is a contract at the address
+        return addr.code.length > 0;
+    }
 
     function run() public {
         console2.log("Deploying on chain ID", block.chainid);
-        address implementation = SafeSingletonDeployer.broadcastDeploy({
-            creationCode: type(CoinbaseSmartWallet).creationCode,
-            salt: 0x3771220e68256b8d5aa359fe953bf594dad1a5473239d1251256f0e5e7473b16
-        });
-        console2.log("implementation", implementation);
-        assert(implementation == EXPECTED_IMPLEMENTATION);
 
-        address factory = SafeSingletonDeployer.broadcastDeploy({
-            creationCode: type(CoinbaseSmartWalletFactory).creationCode,
-            args: abi.encode(EXPECTED_IMPLEMENTATION),
-            salt: 0x0000000000000000000000000000000000000000e8448b6b950698874d6a35bd
-        });
-        console2.log("factory", factory);
-        assert(factory == EXPECTED_FACTORY);
+        if (isDeployed(EXPECTED_IMPLEMENTATION)) {
+            console2.log("implementation already deployed");
+        } else {
+            address implementation = SafeSingletonDeployer.broadcastDeploy({
+                creationCode: type(CoinbaseSmartWallet).creationCode,
+                salt: 0x3771220e68256b8d5aa359fe953bf594dad1a5473239d1251256f0e5e7473b16
+            });
+            console2.log("implementation", implementation);
+            assert(implementation == EXPECTED_IMPLEMENTATION);
+        }
+
+        if (isDeployed(EXPECTED_FACTORY)) {
+            console2.log("factory already deployed");
+        } else {
+            address factory = SafeSingletonDeployer.broadcastDeploy({
+                creationCode: type(CoinbaseSmartWalletFactory).creationCode,
+                args: abi.encode(EXPECTED_IMPLEMENTATION),
+                salt: 0x0000000000000000000000000000000000000000e8448b6b950698874d6a35bd
+            });
+            console2.log("factory", factory);
+            assert(factory == EXPECTED_FACTORY);
+        }
     }
 }
